@@ -50,7 +50,7 @@ async function run() {
     });
 
     //update single product
-    app.put("/coffee/:id", async (req, res) => {
+    app.put("/product/:id", async (req, res) => {
       const updateId = req.params.id;
       const filter = { _id: new ObjectId(updateId) };
       const options = { upsert: true };
@@ -62,9 +62,9 @@ async function run() {
           name: updatedProduct.name,
           brand: updatedProduct.brand,
           type: updatedProduct.type,
+          description: updatedProduct.description,
           rating: updatedProduct.rating,
           price: updatedProduct.price,
-          description: updatedProduct.description,
         },
       };
       const result = await productsCollection.updateOne(
