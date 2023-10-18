@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 require("dotenv").config();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const port = process.env.PORT || 5000;
 
@@ -26,11 +26,23 @@ async function run() {
 
     const productsCollection = client.db("ecoTechDB").collection("products");
 
+    //find all product
     app.get("/products", async (req, res) => {
       const result = await productsCollection.find().toArray();
       res.send(result);
     });
 
+    //find single product by id
+    app.get("/product/:id", async (req, res) => {
+      const productId = req.params.id;
+      const query = {
+        _id: new ObjectId(productId),
+      };
+      const result = await productsCollection.findOne(query);
+      res.send(result);
+    });
+
+    //single product create
     app.post("/product", async (req, res) => {
       const newProduct = req.body;
       const result = await productsCollection.insertOne(newProduct);
@@ -38,7 +50,7 @@ async function run() {
     });
 
     await client.db("admin").command({ ping: 1 });
-    console.log("connected to MongoDB!");
+    console.log("connected to MongoDB");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
@@ -47,7 +59,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("EcoTechUniverse is running....");
+  res.send("EcoTechUniverse is running now....");
 });
 
 app.listen(port, () => {
