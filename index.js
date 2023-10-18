@@ -49,6 +49,32 @@ async function run() {
       res.send(result);
     });
 
+    //update single product
+    app.put("/coffee/:id", async (req, res) => {
+      const updateId = req.params.id;
+      const filter = { _id: new ObjectId(updateId) };
+      const options = { upsert: true };
+      const updatedProduct = req.body;
+
+      const product = {
+        $set: {
+          image: updatedProduct.image,
+          name: updatedProduct.name,
+          brand: updatedProduct.brand,
+          type: updatedProduct.type,
+          rating: updatedProduct.rating,
+          price: updatedProduct.price,
+          description: updatedProduct.description,
+        },
+      };
+      const result = await productsCollection.updateOne(
+        filter,
+        product,
+        options
+      );
+      res.send(result);
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log("connected to MongoDB");
   } finally {
