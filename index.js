@@ -25,6 +25,20 @@ async function run() {
     await client.connect();
 
     const productsCollection = client.db("ecoTechDB").collection("products");
+    const cartCollection = client.db("ecoTechDB").collection("carts");
+
+    //cart api start
+    app.get("/carts", async (req, res) => {
+      const result = await cartCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.post("/cart", async (req, res) => {
+      const newCart = req.body;
+      const result = await cartCollection.insertOne(newCart);
+      res.send(result);
+    });
+    // cart api close
 
     //find all product
     app.get("/products", async (req, res) => {
