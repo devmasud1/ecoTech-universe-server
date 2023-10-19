@@ -39,12 +39,17 @@ async function run() {
       res.send(result);
     });
 
-    app.delete("/cart/:id", async(req, res) => {
-      const deleteId = req.params.id;
-      const query = {_id: new ObjectId(deleteId)};
+
+   
+   
+    app.delete("/cart/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log("delete", id);
+      const query = { _id: id };
       const result = await cartCollection.deleteOne(query);
+      console.log(result);
       res.send(result);
-    })
+    });
     // cart api close
 
     //find all product
