@@ -22,7 +22,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
 
     const productsCollection = client.db("ecoTechDB").collection("products");
     const cartCollection = client.db("ecoTechDB").collection("carts");
@@ -39,9 +39,6 @@ async function run() {
       res.send(result);
     });
 
-
-   
-   
     app.delete("/cart/:id", async (req, res) => {
       const id = req.params.id;
       console.log("delete", id);
