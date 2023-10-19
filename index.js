@@ -38,6 +38,13 @@ async function run() {
       const result = await cartCollection.insertOne(newCart);
       res.send(result);
     });
+
+    app.delete("/cart", async(req, res) => {
+      const deleteId = req.params.id;
+      const query = { _id: new ObjectId(deleteId) };
+      const result = await cartCollection.deleteOne(query);
+      res.send(result);
+    })
     // cart api close
 
     //find all product
